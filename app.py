@@ -38,9 +38,9 @@ def predict_cluster(X_scaled: np.ndarray) -> np.ndarray:
     return train_labels[indices.flatten()]
 
 CLUSTER_NAMES = {
-    0: "Banane",
-    1: "Raisin",
-    2: "Ananas"
+    0: "fruit intermediaire",
+    1: "petits fruits",
+    2: "gros fruits"
 }
 def get_fruit_name(cluster_id: int) -> str:
     return CLUSTER_NAMES.get(cluster_id, f"Groupe inconnu ({cluster_id})")
@@ -112,11 +112,19 @@ def predict(data: FruitData):
     cluster = predict_cluster(scaled)
     cluster_id = int(cluster[0])
     fruit_name = get_fruit_name(cluster_id)
+    if cluster_id == 0:
+        message = f"C'est un {fruit_name} par exemple : kiwi,petite banane,pêche,etc..)"
+    elif cluster_id == 1:
+        message = f"C'est un {fruit_name} par exemple : cerise,raisin,framboise,etc..)"
+    elif cluster_id == 2:
+        message = f"C'est un {fruit_name} par exemple : melon,poire,grosse pomme,etc..)"
+    else:
+        message = f"{fruit_name}. Aucune description spécifique disponible pour ce cluster."
 
     return {
         "cluster": cluster_id,
         "fruit_name": fruit_name,
-        "message": f"Ce fruit est un(e) {fruit_name}"
+        "message": message,
     }
 
 # =========================
